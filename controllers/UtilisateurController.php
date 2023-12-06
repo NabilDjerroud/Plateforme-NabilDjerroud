@@ -4,33 +4,33 @@
 
 function index() {
     render("/nouvelUtilisateur.php");
-    
+
 }
 
 function newuser() {
     require('database/connex.php');
 
     if($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Vérification et échappement des données POST
+        // VÃ©rification et Ã©chappement des donnÃ©es POST
         $nom = isset($_POST['nom']) ? mysqli_real_escape_string($connex, $_POST['nom']) : '';
         $user_name = isset($_POST['user_name']) ? mysqli_real_escape_string($connex, $_POST['user_name']) : '';
         $date_naissance = isset($_POST['date_naissance']) ? mysqli_real_escape_string($connex, $_POST['date_naissance']) : '';
         $password = isset($_POST['password']) ? mysqli_real_escape_string($connex, $_POST['password']) : '';
-        // Génération du sel pour le mot de passe
+        // GÃ©nÃ©ration du sel pour le mot de passe
         $salt = "B13L&@u'";
         $saltPassword = $password.$salt;
 
         // Hachage du mot de passe
         $password = isset($_POST['password']) ? password_hash($saltPassword, PASSWORD_BCRYPT, ['cost' => 10]) : '';
 
-        // Vérifiez que toutes les données sont présentes
+        // VÃ©rifiez que toutes les donnÃ©es sont prÃ©sentes
         if($nom !== '' && $user_name !== '' && $date_naissance !== '' && $password !== '') {
-            // Requête SQL avec des backticks pour les noms de colonnes
+            // RequÃªte SQL avec des backticks pour les noms de colonnes
             $sql = "INSERT INTO utilisateur (`nom`, `user_name`, `password`, `date_naissance`) VALUES ('$nom', '$user_name', '$password', '$date_naissance')";
 
-            // Exécution de la requête SQL
+            // ExÃ©cution de la requÃªte SQL
             if(mysqli_query($connex, $sql)) {
-                echo "Success";
+                header('location:login.php?controller=utilisateur&function=afficherconnexion');
             } else {
                 echo "Error: ".$sql."<br>".mysqli_error($connex);
             }
@@ -38,9 +38,10 @@ function newuser() {
             echo "Veuillez remplir tous les champs du formulaire.";
         }
     } else {
-        echo "Méthode non autorisée pour accéder à cette page.";
+        echo "MÃ©thode non autorisÃ©e pour accÃ©der Ã  cette page.";
     }
 }
+
 
 function afficherconnexion() {
     render('/login.php');
@@ -116,7 +117,7 @@ function afficherFormulaire() {
                         class="button">Supprimer</a>
                     <a href="index.php?controller=article&function=modifierArticle&id=<?= $row['id_forum']; ?>"
                         class="button">Editer</a>
-                
+
 
                     <hr>
                     <?php

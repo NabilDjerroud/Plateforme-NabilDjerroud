@@ -2,7 +2,7 @@
 
 function creerArticle() {
     render("/article/creerArticle.php");
-    return afficherFormulaire();
+    // return afficherFormulaire();
 }
 
 
