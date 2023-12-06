@@ -17,7 +17,7 @@ function enregistrerArticle() {
 function supprimerArticle($request) {
     require_once('models/ArticleModel.php');
     supprimer($request);
-    echo "Article supprimé avec succès";
+    header('location:index.php?controller=utilisateur&function=afficherFormulaire');
 
 }
 
